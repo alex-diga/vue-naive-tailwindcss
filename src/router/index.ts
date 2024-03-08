@@ -1,14 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Home from '@/pages/home/index.vue'
-import loopVideo from '@/pages/video/loop.vue'
+import loopVideo from '@/pages/video/loop/index.vue'
+import multipleVideo from '@/pages/video/multiple/index.vue'
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
 const routes = [
   { path: '/', component: Home },
-  { path: '/loopVideo', component: loopVideo }
+  { path: '/video/loop', component: loopVideo },
+  { path: '/video/multiple', component: multipleVideo }
 ]
 
 // 3. 创建路由实例并传递 `routes` 配置

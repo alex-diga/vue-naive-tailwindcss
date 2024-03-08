@@ -1,51 +1,28 @@
-import axios from 'axios'
+import axios from './axios'
 
-// 创建axios实例
-const service = axios.create({
-  // 服务接口请求
-  baseURL: '/apis'
-  // 超时设置
-  // timeout: 15000,
-  // headers: { 'Content-Type': 'application/json;charset=utf-8' }
-})
+type IObj = Record<string, unknown>
 
-// 请求拦截
-service.interceptors.request.use(
-  (config) => {
-    // 是否需要设置 token 放在请求头
-    // 让每个请求携带自定义token 请根据实际情况自行修改
-    // config.headers['Authorization'] = 'Bearer ' + getToken();
-    return config
-  },
-  (error) => {
-    console.log(error)
-    Promise.reject(error)
-  }
-)
+type DefaultResponse = {
+  code: number
+  message?: string
+  success?: boolean
+  result: IObj
+}
 
-// 响应拦截器
-service.interceptors.response.use(
-  (res: any) => {
-    // 未设置状态码则默认成功状态
-    const code = res.data['code'] || 200
-    if (code === 200) {
-      return Promise.resolve(res.data)
-    } else {
-      return Promise.reject(res.data)
-    }
-  },
-  (error) => {
-    console.log('err' + error)
-    let { message } = error
-    if (message == 'Network Error') {
-      message = '后端接口连接异常'
-    } else if (message.includes('timeout')) {
-      message = '系统接口请求超时'
-    } else if (message.includes('Request failed with status code')) {
-      message = '系统接口' + message.substr(message.length - 3) + '异常'
-    }
-    return Promise.reject(error)
-  }
-)
+type IPromiseResponse<T = IObj> = Promise<DefaultResponse & T>
 
-export default service
+// 获取监控视频 flv 实时播放流地址
+export const getflvurl = (
+  codes: string[]
+): IPromiseResponse<{ result: Record<string, string> }> =>
+  axios.post('/mock/dailyreport/nebula-vidicon/getflvurl', codes)
+
+// 获取监控设备列表
+export const getVideoList = (
+  pageNo: number,
+  pageSize = 10,
+  name = ''
+): IPromiseResponse<{ result: any[] }> =>
+  axios.get(
+    `/mock/dailyreport/nebula-vidicon/vidiconList?pageNo=${pageNo}&pageSize=${pageSize}&name=${name}`
+  )

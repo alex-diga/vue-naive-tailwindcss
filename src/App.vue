@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { createTheme, inputDark, datePickerDark } from 'naive-ui'
-import { zhCN, dateZhCN } from 'naive-ui'
-
-const darkTheme = createTheme([inputDark, datePickerDark])
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 </script>
 
 <template>
-  <n-config-provider :theme="darkTheme" :locale="zhCN" :date-locale="dateZhCN">
+  <el-config-provider :locale="zhCn">
     <router-view></router-view>
-  </n-config-provider>
+  </el-config-provider>
 </template>
 
 <style scoped></style>

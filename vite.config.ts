@@ -3,9 +3,10 @@ import vue from '@vitejs/plugin-vue'
 // tailwindcss、autoprefixer
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
+// 按需导入
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import path from 'path'
 
 // https://vitejs.dev/config/
@@ -13,20 +14,10 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      imports: [
-        'vue',
-        {
-          'naive-ui': [
-            'useDialog',
-            'useMessage',
-            'useNotification',
-            'useLoadingBar'
-          ]
-        }
-      ]
+      resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [NaiveUiResolver()]
+      resolvers: [ElementPlusResolver()]
     })
   ],
   base: './',
@@ -42,6 +33,10 @@ export default defineConfig({
     proxy: {
       '/apis': {
         target: 'http://172.22.32.61:9095',
+        changeOrigin: true
+      },
+      '/mock': {
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true
       }
     }
